@@ -250,7 +250,7 @@ begin
       result := cb_status & be_status;
       --
       --file_open(fstatus, logfile, "log.txt", write_mode);
-      file_open(fstatus, logfile, "c:\vw\xilinx_ku060_v2-2\tb_log.txt", append_mode);
+      file_open(fstatus, logfile, "c:\vw\xilinx_ku040\tb_log.txt", append_mode);
       L1 : write(buf, string'("tb result: [cb_status & be_status] = ["));
       L2 : write(buf, to_bitvector(result));
       L3 : write(buf, string'("] "));
