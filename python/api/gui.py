@@ -136,8 +136,10 @@ def adc_config():
 
 def adc_clk_config(adc_clk_sel):
     if adc_clk_sel == "PLL CLK":
+        print(">> PLL_CLK")
         app.clk_sel(1)
     else:
+        print(">> EXT CLK")
         app.clk_sel(0)
         
 def ref_config(ref_sel):
@@ -164,6 +166,15 @@ def synco_config(synco_sel):
     else:
         app.synco_sel(1)
         
+def calset_config(calset_sel):
+    if calset_sel == "CalSet0":
+        app.ev12aq600_cal_set_sel(0)
+    elif calset_sel == "CalSet1":
+        app.ev12aq600_cal_set_sel(1)
+    elif calset_sel == "CalSet2":    
+        app.ev12aq600_cal_set_sel(2)
+    else:    
+        app.ev12aq600_cal_set_sel(3)
 """  
 #################################################################################
 ## PLOT FUNCTIONS 
@@ -427,10 +438,16 @@ r = r + 1
 text = "ADC CLK frequency [MHz]"
 label0 = Label(root, text=text, bg="white").grid(row=r)
 ##-------------------------------------------------------------------------------
-##-------------------------------------------------------------------------------
 e0 = Entry(root, width = entry_width)
 e0.insert(END, '5000.0')
 e0.grid(row = r, column = 1)
+##-------------------------------------------------------------------------------
+e03_options_list = ["CalSet0", "CalSet1", "CalSet2", "CalSet3"]
+e03v = StringVar(root)
+e03v.set("CalSet0")
+e03 = tkinter.OptionMenu(root, e03v, *e03_options_list, command=calset_config)
+e03.config(width=menu_width)
+e03.grid(row = r, column = 2)
 ##-------------------------------------------------------------------------------
 ## New row
 ##-------------------------------------------------------------------------------
@@ -443,6 +460,10 @@ e1.insert(END, '0')
 e1.grid(row = r, column = 1)
 tooltip1 = Balloon()
 tooltip1.bind_widget(e1, balloonmsg="0: 1ch IN0 \n1: 1ch IN3 \n2: 2ch IN0 core A&B, IN3 core C&D \n3: 2ch IN3 core A&B, IN0 core C&D \n4: 4ch")
+##-------------------------------------------------------------------------------
+text = "OTP Load"
+button002 = Button(root, text=text, width = button_width, command=app.ev12aq600_otp_load, activebackground='green')
+button002.grid(row = r, column = 2)
 ##-------------------------------------------------------------------------------
 ## New row
 ##-------------------------------------------------------------------------------
@@ -569,8 +590,8 @@ e23.grid(row = r, column = 2)
 ##-------------------------------------------------------------------------------
 r = r + 1
 text = "SYNC"
-button002 = Button(root, text=text, width = button_width, command=app.sync_pulse, activebackground='green')
-button002.grid(row = r, column = 0)
+button003 = Button(root, text=text, width = button_width, command=app.sync_pulse, activebackground='green')
+button003.grid(row = r, column = 0)
 ##
 e24_options_list = ["FPGA SYNCO", "EXT SYNCO"]
 e24v = StringVar(root)
@@ -578,6 +599,11 @@ e24v.set("FPGA SYNCO")
 e24 = tkinter.OptionMenu(root, e24v, *e24_options_list, command=synco_config)
 e24.config(width=menu_width)
 e24.grid(row = r, column = 2)
+r = r + 1
+##-------------------------------------------------------------------------------
+text = "RST ESI"
+button004 = Button(root, text=text, width = button_width, command=app.esistream_reset_pulse, activebackground='green')
+button004.grid(row = r, column = 1)
 ##-------------------------------------------------------------------------------
 root.mainloop()
 

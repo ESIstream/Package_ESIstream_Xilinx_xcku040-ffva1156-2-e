@@ -644,6 +644,70 @@ class ev12aq600:
         ## Start spi write operation...
         self.spi_start_pulse()
 
+    def ev12aq600_cal_set_sel(self, calset):
+        reg_addr = 0x008009
+        if calset == 0:
+            # CalSet0 selected
+            reg_data_bit = 1
+            self.unset_aq600_bit(reg_addr, reg_data_bit)
+            reg_data_bit = 2
+            self.unset_aq600_bit(reg_addr, reg_data_bit)
+        elif calset == 1:
+            # CalSet1 selected
+            reg_data_bit = 1
+            self.set_aq600_bit(reg_addr, reg_data_bit)
+            reg_data_bit = 2
+            self.unset_aq600_bit(reg_addr, reg_data_bit)
+        elif calset == 2:
+            # CalSet2 selected
+            reg_data_bit = 1
+            self.unset_aq600_bit(reg_addr, reg_data_bit)
+            reg_data_bit = 2
+            self.set_aq600_bit(reg_addr, reg_data_bit)
+        else:
+            # CalSet3 selected
+            reg_data_bit = 1
+            self.set_aq600_bit(reg_addr, reg_data_bit)
+            reg_data_bit = 2
+            self.set_aq600_bit(reg_addr, reg_data_bit)
+
+        self.spi_wr_fifo_aq600(reg_addr)
+        
+        ## Start spi write operation...
+        self.spi_start_pulse()
+        
+    def ev12aq600_clk_mode_sel(self, mode):
+        reg_addr = 0x00800A
+        if mode == 0:
+            # 00: all clocks are interleaved (default)
+            reg_data_bit = 0
+            self.unset_aq600_bit(reg_addr, reg_data_bit)
+            reg_data_bit = 1
+            self.unset_aq600_bit(reg_addr, reg_data_bit)
+        elif mode == 1:
+            # 01: clock A=B, clock C=D
+            reg_data_bit = 0
+            self.set_aq600_bit(reg_addr, reg_data_bit)
+            reg_data_bit = 1
+            self.unset_aq600_bit(reg_addr, reg_data_bit)
+        elif mode == 2:
+            # 10: clock A=C, clock B=D
+            reg_data_bit = 0
+            self.unset_aq600_bit(reg_addr, reg_data_bit)
+            reg_data_bit = 1
+            self.set_aq600_bit(reg_addr, reg_data_bit)
+        else:
+            # elif mode == 3:
+            # 11: clock A=B=C=D , all clocks are identical
+            reg_data_bit = 0
+            self.set_aq600_bit(reg_addr, reg_data_bit)
+            reg_data_bit = 1
+            self.set_aq600_bit(reg_addr, reg_data_bit)
+
+        self.spi_wr_fifo_aq600(reg_addr)
+        
+        ## Start spi write operation...
+        self.spi_start_pulse()
 
     def ev12aq600_cps_ctrl(self, mode):
         reg_addr = 0x00800B
