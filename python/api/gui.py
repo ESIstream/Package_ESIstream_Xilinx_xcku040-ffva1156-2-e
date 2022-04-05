@@ -267,7 +267,7 @@ def plot_iladata():
     if devkit == "vck190":
         lane_swap = [2, 3, 0, 1, 6, 5, 4, 7]
     elif devkit == "kcu105":
-        lane_swap = [6, 7, 4, 5, 2, 1, 0, 3]
+        lane_swap = [6, 7, 4, 5, 1, 2, 0, 3]
     elif devkit == "ada-sdev-kit2":
         lane_swap = [2, 3, 0, 1, 6, 5, 4, 7]
     else:
